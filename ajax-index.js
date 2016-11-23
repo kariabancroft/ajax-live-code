@@ -32,7 +32,7 @@ $(document).ready(function() {
     toggleTableView(true);
   };
 
-  $('button').click(function() {
+  $('#load-pet-button').click(function() {
     $.get(url, successCallback)
       .fail(failCallback)
       .always(alwaysCallback);
@@ -71,5 +71,39 @@ $(document).ready(function() {
     var showUrl = url + '/' + id;
     $.get(showUrl, showSuccess)
       .fail(showFailure);
-  });
+  };
+
+
+
+  // POST STUFF (from Wednesday w/ Dan)
+  var postCallback = function() {
+    alert("POST worked just fine!");
+  };
+
+  var addPetCallback = function(event) {
+    // The default action on submit is to refresh
+    // the page! Not what we want!
+    event.preventDefault();
+
+    console.log("Sending pet data!");
+
+    // jQuery knows how to take form data and turn
+    // it into something we can send with our POST
+    // request. This process is called serialization.
+    var petData = $(this).serialize();
+
+    console.log("Pet data is " + petData);
+
+    // Send the POST. Just like GET, but with data!
+    $.post(url, petData, postCallback);
+  };
+
+  // We'll attach ourselves to the "submit" event
+  // on our input form. It has a few differences from
+  // waiting for a click on a button:
+  //   * The event happens on the form, not the button,
+  //       so we'll have access to form data
+  //   * Submit can be triggered by clicking the button
+  //       or by pressing enter
+  $('#add-pet-form').submit(addPetCallback);
 });
